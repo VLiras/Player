@@ -7,7 +7,31 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-
+  const [data, setData] = useState({
+    name:'',
+    lastName:''
+  })
+  const handleData = (event) => {
+    setData({
+      ...data,
+      [event.target.name] : event.target.value
+    })
+  }
+  console.log(data)
+  const submit = (object) => {
+    try{
+      fetch('http://127.0.0.1:8000/products', {
+        method:'POST', 
+        mode:'no-cors',
+        headers:{'Content-type':'application/json'},
+        body: JSON.stringify(object)
+      })
+    }
+    catch(err){
+      console.warn(err)
+    }
+  }
+  
   return (
     <div className="App">
       {/* <div>
@@ -32,6 +56,9 @@ function App() {
       </p> */}
       <div>
         <h1>Hola Mundo!!</h1>
+        <input type="text" value={data.name} onChange={handleData} name={'name'}  className='form' />
+        <input type="text" value={data.lastName} onChange={handleData} name={'lastName'}  className='form'/>
+        <button type='submit' onClick={() => submit(data)} className='formButton'>Enviar</button>
       </div>
     </div>
   )
